@@ -1,13 +1,13 @@
 from flask import Flask, request, Response
 from twilio.twiml.messaging_response import MessagingResponse
 
-application = Flask(__name__)
+app = Flask(__name__)
 
-@application.route('/')
+@app.route('/')
 def hello_world():
     return 'Hello, World!'
 
-@application.route('/bot', methods=['POST'])
+@app.route('/bot', methods=['POST'])
 def message():
     incoming_msg = request.values.get('Body', '').lower()
     resp = MessagingResponse()
@@ -21,5 +21,5 @@ def message():
     return Response(str(resp), mimetype="application/xml")
 
 if __name__ == '__main__':
-    application.debug=True
-    application.run(port=8000)
+    app.debug=True
+    app.run()
