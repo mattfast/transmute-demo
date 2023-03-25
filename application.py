@@ -4,8 +4,8 @@ from twilio.twiml.messaging_response import MessagingResponse
 application = Flask(__name__)
 
 @application.route('/')
-def hello():
-    return 'hello'
+def hello_world():
+    return 'Hello, World!'
 
 @application.route('/bot', methods=['POST'])
 def message():
@@ -21,4 +21,5 @@ def message():
     return Response(str(resp), mimetype="application/xml")
 
 if __name__ == '__main__':
-    application.run(host='127.0.0.1', port=5000, debug=True)
+    application.debug=True
+    application.run(port=8000)
