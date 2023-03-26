@@ -7,6 +7,9 @@ USER_TABLE_PERSONA = "persona"
 SUMMARY_TABLE_NAME = "Summaries"
 SUMMARY_TABLE_NUM = "user_num"
 SUMMARY_TABLE_LINK = "link"
+SUMMARY_TABLE_MAIN_SUMMARY = "summary"
+SUMMARY_TABLE_persona = "persona"
+SUMMARY_TABLE_SYNTHESIS = "synthesis"
 
 DEFAULT_PERSONA = "investor"
 
