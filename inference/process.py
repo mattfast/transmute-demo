@@ -1,5 +1,6 @@
-from typing import List
-
+from typing import List, Dict
+import json
+from langchain.docstore.document import Document
 from inference.prompts import (
     extra_info_chain,
     group_chain,
@@ -12,5 +13,72 @@ from inference.prompts import (
 )
 
 
-def generate_initial_bullets(news_article: str, persona: str) -> List[str]:
+def generate_initial_bullets(news_article: str, persona: str) -> str:
     """Generate initial bullets."""
+    # Extract interesting tidbits
+    tid_dict = {"article": news_article, "profession": persona}
+    tid_res = tid_chain(tid_dict)["text"]
+
+    # Extract primary interest/purpose of text from persona perspective
+    purpose_res = purpose_chain(tid_dict)["text"]
+
+    # Group interesting parts into themes
+    article_dict = {"article": news_article, "points": tid_res}
+    order = group_chain(article_dict)["text"]
+
+    # Organize into bulleted summary
+    article_dict = {"article": news_article, "points": tid_res, "themes": order,
+                    "prof_purpose": purpose_res}
+    bullet_output = new_sum_chain(article_dict)["text"]
+
+    return bullet_output
+
+
+def generate_extra_info_bullets(
+    bullets_to_synthesize: List[str],
+    docs_to_include_for_bullets: List[List[Document]]
+) -> List[str]:
+    """Generate extra info bullets."""
+    extra_info_bullets = []
+    for i, text in enumerate(bullets_to_synthesize):
+        val = "\n".join(["- " + doc.page_content for doc in docs_to_include_for_bullets[i]])
+        extra_info_dict = {"first": bullets_to_synthesize[i], "second": val}
+        extra_res = extra_info_chain(extra_info_dict)["text"]
+        extra_dict = json.loads(extra_res)
+        if extra_dict["extra_info_needed"] == "YES":
+            extra_info_bullets.append(extra_dict["extra_info"])
+    return extra_info_bullets
+
+
+def generate_synthesis_bullets(relation_dict: Dict, doc_dict: Dict) -> List[str]:
+    """Generate synthesis bullets."""
+    synth_results = []
+    for rel_key in relation_dict.keys():
+        relevant_to_prev = '\n'.join(["- " + text for text in relation_dict[rel_key]])
+        synth_dict = {"first": relevant_to_prev, "second": rel_key}
+        synth_res = synth_chain(synth_dict)["text"]
+        link = doc_dict[rel_key].metadata["link"]
+        synth_results.append(synth_res + f" (Source: {link})")
+
+    if len(synth_results) == 0:
+        return []
+
+    synth_bullets = synth_combo_chain.run("\n".join(["- " + result for result in synth_results]))
+    ind_synths = synth_bullets.split("\n")
+    return ind_synths
+
+
+def separate_bullet_output(bullet_output: str) -> List[str]:
+    """Separate bullet output into bullets."""
+    # Split bulleted output up
+    bullets = bullet_output.split("\n")
+    cleaned_bullets = []
+    for b in bullets:
+        b = b.strip("-").strip()
+        cleaned_bullets.append(b)
+
+    return cleaned_bullets
+
+
+
+

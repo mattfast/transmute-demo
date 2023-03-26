@@ -58,18 +58,11 @@ def message():
             summaries[SUMMARY_TABLE_MAIN_SUMMARY], summaries[SUMMARY_TABLE_SYNTHESIS]
         )
     else:
-        formatted_resp = process_new_link(incoming_msg, persona, index)
+        summary, synthesis = process_new_link(incoming_msg, persona, index)
+        formatted_resp = format_summaries_for_text(summary, synthesis)
 
     for res in formatted_resp:
         resp.message(res)
-
-    # if "1" in incoming_msg:
-    #     resp.message("you sent a 1. good for you.")
-    #     resp.message("Created a new user")
-    #     resp.message(user_number)
-    #     resp.message(f"Pinecone Index: {index}")
-    # else:
-    #     resp.message("you did not send a 1. fuck you")
 
     print(Response(str(resp), mimetype="application/xml"))
 

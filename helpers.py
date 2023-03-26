@@ -1,8 +1,17 @@
 import urllib.request
-from typing import Any, List
+import pinecone
+from typing import List, Dict, Tuple
 
 from bs4 import BeautifulSoup
 from langchain.text_splitter import TokenTextSplitter
+from langchain.docstore.document import Document
+from db.embeddings import find_docs, insert_docs
+from inference.process import (
+    generate_initial_bullets,
+    separate_bullet_output,
+    generate_extra_info_bullets,
+    generate_synthesis_bullets
+)
 
 
 def process_link_to_website_text(link: str) -> str:
@@ -35,12 +44,76 @@ def process_link_to_website_text(link: str) -> str:
     return text
 
 
-def process_new_link(link: str, persona: str, index: Any) -> List[str]:
+def process_new_link(link: str, persona: str, index: pinecone.Index) -> Tuple[str, str]:
     """Control flow for processing new link."""
     link_text = process_link_to_website_text(link)
+    print(f"Got text from website: {link_text}")
     text_split = TokenTextSplitter()
     splits = text_split.split_text(link_text)
     news_article = splits[0]
+    print(f"Split succesfully.")
+
+    bullet_output = generate_initial_bullets(news_article, persona)
+    print(f"Generated bullets.")
+    initial_bullets = separate_bullet_output(bullet_output)
+    metadatas = [{"link": link} for _ in range(len(initial_bullets))]
+    print(f"Separated bullets.")
+
+    fully_relevant_texts = find_docs(index, bullet_output, k=3)
+    print(f"Found Docs.")
+
+    bullets_to_synthesize = []
+    docs_to_include_for_bullets = []
+
+    # Create doc dictionary for accessing Documents by content
+    doc_dict = {}
+    for text in fully_relevant_texts:
+        doc_dict[text.page_content] = text
+
+    # Data structures for synthesizing bullets and relevant texts
+    for bullet in initial_bullets:
+        bullets_to_synthesize.append(bullet)
+        docs_to_include_for_bullets.append(fully_relevant_texts)
+    relation_dict = create_relation_dict(
+        bullets_to_synthesize, docs_to_include_for_bullets
+    )
+    print(f"Created extra data structures.")
+
+    extra_info_bullets = generate_extra_info_bullets(
+        bullets_to_synthesize, docs_to_include_for_bullets
+    )
+    print(f"Generated extra info.")
+
+    synthesis_bullets = generate_synthesis_bullets(
+        relation_dict, doc_dict
+    )
+    print(f"Generated Synthesis.")
+
+    formatted_learned = "\n".join(["- " + bullet for bullet in extra_info_bullets])
+    format_synth = "\n".join(synthesis_bullets)
+
+    insert_docs(index, extra_info_bullets, metadatas)
+    print(f"Finished Insertion.")
+
+    return formatted_learned, format_synth
+
+
+def create_relation_dict(
+    bullets_to_synthesize: List[str],
+    docs_to_include_for_bullets: List[List[Document]]
+) -> Dict:
+    """Create relation dict between docs and bullets."""
+    relation_dict: Dict = {}
+    for i, text in enumerate(bullets_to_synthesize):
+        for doc in docs_to_include_for_bullets[i]:
+            pc = doc.page_content
+            if pc not in relation_dict:
+                relation_dict[pc] = [text]
+            else:
+                val = relation_dict[pc]
+                val.append(text)
+                relation_dict[pc] = val
+    return relation_dict
 
 
 def format_summaries_for_text(summary: str, synthesis: str) -> List[str]:

@@ -136,7 +136,7 @@ extra_info_tmpl = PromptTemplate(
 extra_info_chain = LLMChain(llm=gpt4_500_llm, prompt=extra_info_tmpl, verbose=True)
 
 
-synthesis_prompt = """COnnect the information from the first to information in the second piece.
+synthesis_prompt = """Connect the information from the first to information in the second piece.
 
 You're synthesis can touch on a number of things, including but not limited to:
 - how the meaning of the two are different

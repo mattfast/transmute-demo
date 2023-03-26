@@ -1,6 +1,6 @@
 import uuid
 from typing import Dict, List
-
+from langchain.embeddings.openai import OpenAIEmbeddings
 import pinecone
 from langchain.docstore.document import Document
 
@@ -9,6 +9,7 @@ from constants import BASE_EMBEDDING_LENGTH
 pinecone.init(
     api_key="7348774e-f6d1-47f6-91c2-b955e910fe4c", environment="us-east1-gcp"
 )
+embeddings = OpenAIEmbeddings()
 
 
 def create_new_user_index() -> str:
