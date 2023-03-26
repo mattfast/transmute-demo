@@ -14,7 +14,7 @@ def message():
     if '1' in incoming_msg:
         resp.message('you sent a 1')
     else:
-        resp.message('you did not send a 1')
+        resp.message('you did not send a 1. fuck you')
     
     print(Response(str(resp), mimetype="application/xml"))
     
