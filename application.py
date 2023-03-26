@@ -43,7 +43,7 @@ def generate_reponse(user_number, incoming_msg):
         index = pinecone.Index(index_name)
         persona = DEFAULT_PERSONA
     else:
-        index = user_info[USER_TABLE_PINECONE_INDEX]
+        index = pinecone.Index(user_info[USER_TABLE_PINECONE_INDEX])
         persona = user_info[USER_TABLE_PERSONA]
 
     # Assume link is the incoming message
