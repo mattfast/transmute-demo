@@ -12,7 +12,7 @@ def message():
     incoming_msg = request.values.get('Body', '').lower()
     resp = MessagingResponse()
     if '1' in incoming_msg:
-        resp.message('you sent a 1')
+        resp.message('you sent a 1. good for you.')
     else:
         resp.message('you did not send a 1. fuck you')
     
