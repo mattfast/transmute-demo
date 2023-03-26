@@ -15,5 +15,3 @@ DEFAULT_PERSONA = "investor"
 
 # Hardcode OpenAI Embedding length. Should change in future
 BASE_EMBEDDING_LENGTH = 1536
-
-OPENAI_API_KEY = "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"

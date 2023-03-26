@@ -1,9 +1,16 @@
 from typing import Dict, List, Optional
 
 from config import supabase
-from constants import (DEFAULT_PERSONA, SUMMARY_TABLE_LINK, SUMMARY_TABLE_NAME,
-                       SUMMARY_TABLE_NUM, USER_TABLE_NAME, USER_TABLE_NUM,
-                       USER_TABLE_PERSONA, USER_TABLE_PINECONE_INDEX)
+from constants import (
+    DEFAULT_PERSONA,
+    SUMMARY_TABLE_LINK,
+    SUMMARY_TABLE_NAME,
+    SUMMARY_TABLE_NUM,
+    USER_TABLE_NAME,
+    USER_TABLE_NUM,
+    USER_TABLE_PERSONA,
+    USER_TABLE_PINECONE_INDEX,
+)
 
 
 def fetch_user_info(user_num: str) -> Optional[Dict]:
