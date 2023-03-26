@@ -2,8 +2,6 @@ from langchain import LLMChain, OpenAI
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts import PromptTemplate
 
-from constants import OPENAI_API_KEY
-
 extract_interesting_tidbits = """List only the key parts of the article below that a {profession} would find interesting. Justify and phrase your response appropriately with examples from the article:
 
 Article:
@@ -12,13 +10,16 @@ Article:
 Output:
 """
 gpt4_800_llm = ChatOpenAI(
-    model_name="gpt-4", max_tokens=800, openai_api_key=OPENAI_API_KEY
+    model_name="gpt-4",
+    max_tokens=800,
 )
 gpt4_700_llm = ChatOpenAI(
-    model_name="gpt-4", max_tokens=700, openai_api_key=OPENAI_API_KEY
+    model_name="gpt-4",
+    max_tokens=700,
 )
 gpt4_500_llm = ChatOpenAI(
-    model_name="gpt-4", max_tokens=500, openai_api_key=OPENAI_API_KEY
+    model_name="gpt-4",
+    max_tokens=500,
 )
 
 tidbits_tmpl = PromptTemplate(
