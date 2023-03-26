@@ -8,10 +8,12 @@ SUMMARY_TABLE_NAME = "Summaries"
 SUMMARY_TABLE_NUM = "user_num"
 SUMMARY_TABLE_LINK = "link"
 SUMMARY_TABLE_MAIN_SUMMARY = "summary"
-SUMMARY_TABLE_persona = "persona"
+SUMMARY_TABLE_PERSONA = "persona"
 SUMMARY_TABLE_SYNTHESIS = "synthesis"
 
 DEFAULT_PERSONA = "investor"
 
 # Hardcode OpenAI Embedding length. Should change in future
 BASE_EMBEDDING_LENGTH = 1536
+
+OPENAI_API_KEY = "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"

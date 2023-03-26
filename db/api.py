@@ -1,16 +1,9 @@
 from typing import Dict, List, Optional
 
 from config import supabase
-from constants import (
-    DEFAULT_PERSONA,
-    USER_TABLE_NAME,
-    USER_TABLE_NUM,
-    USER_TABLE_PERSONA,
-    SUMMARY_TABLE_NAME,
-    SUMMARY_TABLE_NUM,
-    SUMMARY_TABLE_LINK,
-    USER_TABLE_PINECONE_INDEX
-)
+from constants import (DEFAULT_PERSONA, SUMMARY_TABLE_LINK, SUMMARY_TABLE_NAME,
+                       SUMMARY_TABLE_NUM, USER_TABLE_NAME, USER_TABLE_NUM,
+                       USER_TABLE_PERSONA, USER_TABLE_PINECONE_INDEX)
 
 
 def fetch_user_info(user_num: str) -> Optional[Dict]:
@@ -28,7 +21,7 @@ def fetch_user_info(user_num: str) -> Optional[Dict]:
 def create_new_user(
     user_num: str, index_name: str, persona: Optional[str] = None
 ) -> None:
-    """Crete a new user."""
+    """Create a new user."""
     persona = DEFAULT_PERSONA if persona is None else persona
     user_info = {
         USER_TABLE_NUM: user_num,
@@ -50,3 +43,7 @@ def fetch_link_info(user_num: str, link: str) -> Optional[Dict]:
         .data
     )
     return summaries[0] if len(summaries) > 1 else None
+
+
+def insert_summary_info() -> None:
+    """Insert summary info."""
