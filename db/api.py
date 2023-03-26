@@ -22,7 +22,7 @@ def fetch_user_info(user_num: str) -> Optional[Dict]:
         .execute()
         .data
     )
-    return users[0] if len(users) > 1 else None
+    return users[0] if len(users) > 0 else None
 
 
 def create_new_user(
@@ -49,7 +49,7 @@ def fetch_link_info(user_num: str, link: str) -> Optional[Dict]:
         .execute()
         .data
     )
-    return summaries[0] if len(summaries) > 1 else None
+    return summaries[0] if len(summaries) > 0 else None
 
 
 def insert_summary_info() -> None:
