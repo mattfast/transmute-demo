@@ -3,7 +3,7 @@ from flask import Flask, Response, request
 from twilio.twiml.messaging_response import MessagingResponse
 
 from constants import USER_TABLE_PINECONE_INDEX
-from db.api import create_new_user, fetch_user_info
+from db.api import create_new_user, fetch_user_info, fetch_link_info
 from db.embeddings import create_new_user_index
 
 # Stop hardcoding this
@@ -40,6 +40,11 @@ def message():
         index = pinecone.Index(index_name)
     else:
         index = user_info[USER_TABLE_PINECONE_INDEX]
+
+    # Assume link is the incoming message
+    summaries = fetch_link_info(user_number, incoming_msg)
+    if summaries is not None:
+        resp.message("You've already sent this link before!")
 
     if "1" in incoming_msg:
         resp.message("you sent a 1. good for you.")

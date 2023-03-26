@@ -6,11 +6,14 @@ from constants import (
     USER_TABLE_NAME,
     USER_TABLE_NUM,
     USER_TABLE_PERSONA,
+    SUMMARY_TABLE_NAME,
+    SUMMARY_TABLE_NUM,
+    SUMMARY_TABLE_LINK,
     USER_TABLE_PINECONE_INDEX
 )
 
 
-def fetch_user_info(user_num: str) -> Optional[List[Dict]]:
+def fetch_user_info(user_num: str) -> Optional[Dict]:
     """Fetch user info from supabase UserInfo Table."""
     users = (
         supabase.table(USER_TABLE_NAME)
@@ -34,3 +37,16 @@ def create_new_user(
     }
     resp = supabase.table("UserInfo").insert(user_info).execute().data
     assert len(resp) > 0
+
+
+def fetch_link_info(user_num: str, link: str) -> Optional[Dict]:
+    """Fetch Link info from supabase Summaries Table."""
+    summaries = (
+        supabase.table(SUMMARY_TABLE_NAME)
+        .select("*")
+        .filter(SUMMARY_TABLE_NUM, "eq", user_num)
+        .filter(SUMMARY_TABLE_LINK, "eq", link)
+        .execute()
+        .data
+    )
+    return summaries[0] if len(summaries) > 1 else None
