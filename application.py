@@ -10,9 +10,11 @@ def hello_world():
 @app.route('/bot', methods=['POST'])
 def message():
     incoming_msg = request.values.get('Body', '').lower()
+    value_keys = str(request.values)
     resp = MessagingResponse()
     if '1' in incoming_msg:
         resp.message('you sent a 1. good for you.')
+        resp.message(value_keys)
     else:
         resp.message('you did not send a 1. fuck you')
     
