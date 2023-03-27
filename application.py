@@ -43,7 +43,7 @@ def generate_reponse(user_number, incoming_msg):
         persona = DEFAULT_PERSONA
     else:
         client.messages.create(
-            body="Welcome back to Transmute! Hold tight while we generate insights for you",
+            body="Welcome back to Transmute! Hold tight while we generate insights for you.",
             from_=os.environ["TWILIO_PRIMARY_NUMBER"],
             to=user_number
         )
