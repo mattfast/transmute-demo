@@ -134,6 +134,6 @@ def format_summaries_for_text(summary: str, synthesis: str) -> str:
         final_formatted_synthesis = \
     f"Insights to past links:\n{synthesis}"
 
-    final_resp = f"""{final_formatted_summary}\n{final_formatted_synthesis}\nSend us another link to summarize and gain insights from!"""
+    final_resp = f"""{final_formatted_summary}\n\n{final_formatted_synthesis}\n\nSend us another link to summarize and gain insights from!"""
 
     return final_resp
