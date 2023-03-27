@@ -53,11 +53,6 @@ def generate_reponse(user_number, incoming_msg):
     # Assume link is the incoming message
     summaries = fetch_link_info(user_number, incoming_msg)
     if summaries is not None:
-        client.messages.create(
-            body="You've already sent this link before! Here's the summary.",
-            from_=os.environ["TWILIO_PRIMARY_NUMBER"],
-            to=user_number
-        )
         formatted_resp = format_summaries_for_text(
             summaries[SUMMARY_TABLE_MAIN_SUMMARY], summaries[SUMMARY_TABLE_SYNTHESIS]
         )

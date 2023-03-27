@@ -125,25 +125,27 @@ def format_summaries_for_text(summary: str, synthesis: str) -> str:
     if summary == "":
         final_formatted_summary = "Looks like there's no new information in this article!"
     else:
-        final_formatted_summary = f"""
-        What's new in the article:
-        {summary}
-        """
+        final_formatted_summary = \
+    f"""
+    What's new in the article:
+    {summary}
+    """
 
     if synthesis == "":
         final_formatted_synthesis = "There aren't any connections to previous articles you've sent!"
     else:
-        final_formatted_synthesis = f"""
-        Insights to past links:
-        {synthesis}
-        """
+        final_formatted_synthesis = \
+    f"""
+    Insights to past links:
+    {synthesis}
+    """
 
     final_resp = f"""
     {final_formatted_summary}
     
     {final_formatted_synthesis}
     
-    "Send us another link to summarize and gain insights from!"
+    Send us another link to summarize and gain insights from!
     """
 
     return final_resp
