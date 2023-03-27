@@ -33,7 +33,7 @@ def generate_reponse(user_number, incoming_msg):
     user_info = fetch_user_info(user_number)
     if user_info is None:
         client.messages.create(
-            body="Setting up your environment! This could take a couple minutes. Please hold tight",
+            body="Welcome to Transmute! We find all the new and relevant information from the links you send us and deepen the connections with links you've sent us in the past. Please hold tight while we set up your environment. This could take a couple minutes.",
             from_=os.environ["TWILIO_PRIMARY_NUMBER"],
             to=user_number
         )
@@ -43,7 +43,7 @@ def generate_reponse(user_number, incoming_msg):
         persona = DEFAULT_PERSONA
     else:
         client.messages.create(
-            body="Generating interesting insights for this webpage! Hold tight.",
+            body="Welcome back to Transmute! Hold tight while we generate insights for you",
             from_=os.environ["TWILIO_PRIMARY_NUMBER"],
             to=user_number
         )
