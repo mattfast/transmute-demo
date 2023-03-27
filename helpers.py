@@ -147,8 +147,8 @@ def split_bullets_for_summary(bullet_summary: str) -> List[str]:
         if curr_char_length > 1500:
             curr_char_length = 0
             curr_bullet_buffer = []
-    if len(curr_bullet_buffer) > 1:
-        bullets_list.append("\n".join(curr_bullet_buffer[:-1]))
+    if len(curr_bullet_buffer) > 0:
+        bullets_list.append("\n".join(curr_bullet_buffer))
     return bullets_list
 
 
