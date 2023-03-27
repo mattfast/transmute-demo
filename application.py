@@ -28,10 +28,6 @@ account_sid = os.environ['TWILIO_ACCOUNT_SID']
 auth_token = os.environ['TWILIO_AUTH_TOKEN']
 client = Client(account_sid, auth_token)
 
-@app.route("/")
-def hello_world():
-    return "Hello, World!"
-
 
 def generate_reponse(user_number, incoming_msg):
     user_info = fetch_user_info(user_number)
@@ -68,7 +64,6 @@ def generate_reponse(user_number, incoming_msg):
     else:
         summary, synthesis = process_new_link(incoming_msg, persona, index)
         insert_summary_info(user_number, incoming_msg, summary, synthesis)
-        print("Inserted summaries")
         formatted_resp = format_summaries_for_text(summary, synthesis)
 
     for res in formatted_resp:
@@ -77,6 +72,12 @@ def generate_reponse(user_number, incoming_msg):
             from_=os.environ["TWILIO_PRIMARY_NUMBER"],
             to=user_number
         )
+
+    client.messages.create(
+        body="Send us another link to summarize and gain insights from!",
+        from_=os.environ["TWILIO_PRIMARY_NUMBER"],
+        to=user_number
+    )
 
 
 @app.route("/bot", methods=["POST"])

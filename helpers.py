@@ -47,11 +47,9 @@ def process_link_to_website_text(link: str) -> str:
 def process_new_link(link: str, persona: str, index: pinecone.Index) -> Tuple[str, str]:
     """Control flow for processing new link."""
     link_text = process_link_to_website_text(link)
-    print(f"Got text from website: {link_text}")
     text_split = TokenTextSplitter()
     splits = text_split.split_text(link_text)
     news_article = splits[0]
-    print(f"Split succesfully.")
 
     bullet_output = generate_initial_bullets(news_article, persona)
     print(f"Generated bullets.")
@@ -60,7 +58,7 @@ def process_new_link(link: str, persona: str, index: pinecone.Index) -> Tuple[st
     print(f"Separated bullets.")
 
     fully_relevant_texts = find_docs(index, bullet_output, k=3)
-    print(f"Found Docs.")
+    print("Found Docs.")
 
     bullets_to_synthesize = []
     docs_to_include_for_bullets = []
@@ -77,26 +75,29 @@ def process_new_link(link: str, persona: str, index: pinecone.Index) -> Tuple[st
     relation_dict = create_relation_dict(
         bullets_to_synthesize, docs_to_include_for_bullets
     )
-    print(f"Created extra data structures.")
 
     extra_info_bullets = generate_extra_info_bullets(
         bullets_to_synthesize, docs_to_include_for_bullets
     )
-    print(f"Generated extra info.")
+    print("Generated extra info.")
 
     synthesis_bullets = generate_synthesis_bullets(
         relation_dict, doc_dict
     )
-    print(f"Generated Synthesis.")
+    print("Generated Synthesis.")
 
     if len(extra_info_bullets) == 0:
         formatted_learned = ""
     else:
         formatted_learned = "\n".join(["- " + bullet for bullet in extra_info_bullets])
-    format_synth = "\n".join(synthesis_bullets)
+
+    if len(synthesis_bullets) == 0:
+        format_synth = ""
+    else:
+        format_synth = "\n".join(synthesis_bullets)
 
     insert_docs(index, extra_info_bullets, metadatas)
-    print(f"Finished Insertion.")
+    print("Finished Insertion.")
 
     return formatted_learned, format_synth
 
@@ -129,9 +130,12 @@ def format_summaries_for_text(summary: str, synthesis: str) -> List[str]:
         {summary}
         """
 
-    final_formatted_synthesis = f"""
-    Insights to past links:
-    {synthesis}
-    """
+    if synthesis == "":
+        final_formatted_synthesis = "There aren't any connections to previous articles you've sent!"
+    else:
+        final_formatted_synthesis = f"""
+        Insights to past links:
+        {synthesis}
+        """
 
     return [final_formatted_summary, final_formatted_synthesis]
