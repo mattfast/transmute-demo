@@ -120,18 +120,54 @@ def create_relation_dict(
     return relation_dict
 
 
+def split_bullets_for_summary(bullet_summary: str) -> List[str]:
+    """Split bullets for summary."""
+    if len(bullet_summary) < 1600:
+        return [bullet_summary]
+
+    bullets_list = []
+    bullets = bullet_summary.split("\n")
+    curr_bullet_buffer = []
+    curr_char_length = 0
+    curr_index = 0
+    while True:
+        if curr_index >= len(bullets):
+            break
+        while curr_char_length < 1500 and curr_index < len(bullets):
+            curr_bullet_buffer.append(bullets[curr_index])
+            curr_char_length += len(bullets[curr_index])
+            curr_index += 1
+
+        if len(curr_bullet_buffer) > 1:
+            bullets_list.append("\n".join(curr_bullet_buffer[:-1]))
+
+        curr_bullet_buffer = [curr_bullet_buffer[-1]]
+        curr_char_length = len(curr_bullet_buffer[-1])
+
+        if curr_char_length > 1500:
+            curr_char_length = 0
+            curr_bullet_buffer = []
+    if len(curr_bullet_buffer) > 1:
+        bullets_list.append("\n".join(curr_bullet_buffer[:-1]))
+    return bullets_list
+
+
 def format_summaries_for_text(summary: str, synthesis: str) -> List[str]:
     """Format summaries for text message."""
     if summary == "":
         final_formatted_summary = "Looks like there's no new information in this article!"
+        final_formatted_list = [final_formatted_summary]
     else:
         final_formatted_summary = \
     f"""What's new in the article:\n{summary}"""
+        final_formatted_list = split_bullets_for_summary(final_formatted_summary)
 
     if synthesis == "":
         final_formatted_synthesis = "There aren't any connections to previous articles you've sent!"
+        final_synthesized_list = [final_formatted_synthesis]
     else:
         final_formatted_synthesis = \
     f"Insights to past links:\n{synthesis}"
+        final_synthesized_list = split_bullets_for_summary(final_formatted_synthesis)
 
-    return [final_formatted_summary, final_formatted_synthesis]
+    return final_formatted_list + final_synthesized_list
