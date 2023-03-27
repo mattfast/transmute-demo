@@ -5,6 +5,8 @@ from constants import (
     DEFAULT_PERSONA,
     SUMMARY_TABLE_LINK,
     SUMMARY_TABLE_NAME,
+    SUMMARY_TABLE_SYNTHESIS,
+    SUMMARY_TABLE_MAIN_SUMMARY,
     SUMMARY_TABLE_NUM,
     USER_TABLE_NAME,
     USER_TABLE_NUM,
@@ -52,5 +54,14 @@ def fetch_link_info(user_num: str, link: str) -> Optional[Dict]:
     return summaries[0] if len(summaries) > 0 else None
 
 
-def insert_summary_info() -> None:
+def insert_summary_info(user_num: str, link: str, summary: str, synthesis: str) -> None:
     """Insert summary info."""
+    summary_info = {
+        SUMMARY_TABLE_NUM: user_num,
+        SUMMARY_TABLE_LINK: link,
+        SUMMARY_TABLE_MAIN_SUMMARY: summary,
+        SUMMARY_TABLE_SYNTHESIS: synthesis
+    }
+    resp = supabase.table(SUMMARY_TABLE_NAME).insert(summary_info).execute().data
+    assert len(resp) > 0
+

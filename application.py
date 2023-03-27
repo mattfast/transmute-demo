@@ -13,7 +13,7 @@ from constants import (
     USER_TABLE_PERSONA,
     USER_TABLE_PINECONE_INDEX,
 )
-from db.api import create_new_user, fetch_link_info, fetch_user_info
+from db.api import create_new_user, fetch_link_info, fetch_user_info, insert_summary_info
 from db.embeddings import create_new_user_index
 from helpers import format_summaries_for_text, process_new_link
 
@@ -32,39 +32,51 @@ client = Client(account_sid, auth_token)
 def hello_world():
     return "Hello, World!"
 
-def generate_reponse(user_number, incoming_msg):
-    resp = ""
 
+def generate_reponse(user_number, incoming_msg):
     user_info = fetch_user_info(user_number)
     if user_info is None:
-        # index_name = create_new_user_index()
-        index_name = "new-user"
+        client.messages.create(
+            body="Setting up your environment! This could take a couple minutes. Please hold tight",
+            from_=os.environ["TWILIO_PRIMARY_NUMBER"],
+            to=user_number
+        )
+        index_name = create_new_user_index()
         create_new_user(user_number, index_name)
         index = pinecone.Index(index_name)
         persona = DEFAULT_PERSONA
     else:
+        client.messages.create(
+            body="Generating interesting insights for this webpage! Hold tight.",
+            from_=os.environ["TWILIO_PRIMARY_NUMBER"],
+            to=user_number
+        )
         index = pinecone.Index(user_info[USER_TABLE_PINECONE_INDEX])
         persona = user_info[USER_TABLE_PERSONA]
 
     # Assume link is the incoming message
     summaries = fetch_link_info(user_number, incoming_msg)
     if summaries is not None:
-        resp += "You've already sent this link before! Here's the summary."
+        client.messages.create(
+            body="You've already sent this link before! Here's the summary.",
+            from_=os.environ["TWILIO_PRIMARY_NUMBER"],
+            to=user_number
+        )
         formatted_resp = format_summaries_for_text(
             summaries[SUMMARY_TABLE_MAIN_SUMMARY], summaries[SUMMARY_TABLE_SYNTHESIS]
         )
     else:
         summary, synthesis = process_new_link(incoming_msg, persona, index)
+        insert_summary_info(user_number, incoming_msg, summary, synthesis)
+        print("Inserted summaries")
         formatted_resp = format_summaries_for_text(summary, synthesis)
 
     for res in formatted_resp:
-        resp += res
-
-    client.messages.create(
-        body=res,
-        from_=os.environ["TWILIO_PRIMARY_NUMBER"],
-        to=user_number
-    )
+        client.messages.create(
+            body=res,
+            from_=os.environ["TWILIO_PRIMARY_NUMBER"],
+            to=user_number
+        )
 
 
 @app.route("/bot", methods=["POST"])
@@ -83,7 +95,6 @@ def message():
     t = Thread(target=generate_reponse, args=(user_number,incoming_msg))
     t.start()
 
-    resp.message("Generating interesting insights for this webpage! Hold tight.")
     return Response(str(resp), mimetype="application/xml")
 
 

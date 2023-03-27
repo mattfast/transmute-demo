@@ -89,7 +89,10 @@ def process_new_link(link: str, persona: str, index: pinecone.Index) -> Tuple[st
     )
     print(f"Generated Synthesis.")
 
-    formatted_learned = "\n".join(["- " + bullet for bullet in extra_info_bullets])
+    if len(extra_info_bullets) == 0:
+        formatted_learned = ""
+    else:
+        formatted_learned = "\n".join(["- " + bullet for bullet in extra_info_bullets])
     format_synth = "\n".join(synthesis_bullets)
 
     insert_docs(index, extra_info_bullets, metadatas)
@@ -118,13 +121,16 @@ def create_relation_dict(
 
 def format_summaries_for_text(summary: str, synthesis: str) -> List[str]:
     """Format summaries for text message."""
-    final_formatted_summary = f"""
-    What's relevant in the article:
-    {summary}
-    """
+    if summary == "":
+        final_formatted_summary = "Looks like there's no new information in this article!"
+    else:
+        final_formatted_summary = f"""
+        What's new in the article:
+        {summary}
+        """
 
     final_formatted_synthesis = f"""
-    Insights:
+    Insights to past links:
     {synthesis}
     """
 
