@@ -66,15 +66,8 @@ def generate_reponse(user_number, incoming_msg):
         insert_summary_info(user_number, incoming_msg, summary, synthesis)
         formatted_resp = format_summaries_for_text(summary, synthesis)
 
-    for res in formatted_resp:
-        client.messages.create(
-            body=res,
-            from_=os.environ["TWILIO_PRIMARY_NUMBER"],
-            to=user_number
-        )
-
     client.messages.create(
-        body="Send us another link to summarize and gain insights from!",
+        body=formatted_resp,
         from_=os.environ["TWILIO_PRIMARY_NUMBER"],
         to=user_number
     )

@@ -120,7 +120,7 @@ def create_relation_dict(
     return relation_dict
 
 
-def format_summaries_for_text(summary: str, synthesis: str) -> List[str]:
+def format_summaries_for_text(summary: str, synthesis: str) -> str:
     """Format summaries for text message."""
     if summary == "":
         final_formatted_summary = "Looks like there's no new information in this article!"
@@ -138,4 +138,12 @@ def format_summaries_for_text(summary: str, synthesis: str) -> List[str]:
         {synthesis}
         """
 
-    return [final_formatted_summary, final_formatted_synthesis]
+    final_resp = f"""
+    {final_formatted_summary}
+    
+    {final_formatted_synthesis}
+    
+    "Send us another link to summarize and gain insights from!"
+    """
+
+    return final_resp
