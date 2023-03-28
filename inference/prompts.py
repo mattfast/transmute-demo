@@ -42,7 +42,7 @@ purpose_tmpl = PromptTemplate(
 )
 purpose_chain = LLMChain(llm=gpt4_800_llm, prompt=purpose_tmpl, verbose=True)
 
-group_prompt = """Group the following list of key points made in the article into a list of themes pertaining to the article below. Be specific in your choice of themes and tailor your choice to a {profession}. 
+group_prompt = """Group the following list of key points made in the article into a list of themes pertaining to the article below. Be specific in your choice of themes. 
 
 Topics:
 {points}
@@ -54,7 +54,7 @@ Output:
 """
 
 group_temp = PromptTemplate(
-    input_variables=["points", "article", "profession"],
+    input_variables=["points", "article"],
     template=group_prompt,
 )
 group_chain = LLMChain(llm=gpt4_700_llm, prompt=group_temp, verbose=True)
@@ -79,7 +79,7 @@ Do not include a conclusion paragraph, just the content from above.
 Guidelines for writing bullet points:
 - each bullet point should be short. no longer than 12 words
 - do not output more than 4 bullet points
-- tailor the style of your response to a {profession} 
+- explain like you would to a {profession}
 
 Use the following format:
 - bullet 1
@@ -98,7 +98,7 @@ new_sum_chain = LLMChain(llm=gpt4_500_llm, prompt=new_tmpl, verbose=True)
 
 extra_info_prompt = """Determine if the first text contains any meaningful extra information than what is already contained in the second text.
 
-If so, just explain that extra information:
+If so, output that extra information:
 
 First Text:
 {first}
@@ -109,7 +109,7 @@ Second Text:
 Output format (JSON):
 {{
     "extra_info_needed": NO if the first text does not contain information that is valuable in addition to the second. Only output YES if there is more than one specific piece of info that the first text contains that isn't in the second.
-    "extra_info": a sentence explaining the extra information in the first text that is not contained in the second. do not use the words "first text" in your response. just explain the additional information.
+    "extra_info": a sentence containing the extra information. do not use the words "first text" in your response. just provide the additional information.
 }}
 Output:
 """
@@ -162,7 +162,6 @@ Guidelines for synthesizing:
 Guidelines for writing bullet points:
 - each bullet point should be short. no longer than 12 words
 - do not output more than 3 bullet points
-- tailor the wording of your response to a {profession}
 
 Use the following output format:
 - bullet 1 
@@ -171,16 +170,16 @@ Use the following output format:
 - last bullet 
 
 Sources:
-- source 1 used in bullet 1
+- source 1 
 ...
-- last source used in last bullet
+- last source
 
-Include sources verbatim from links above
+Include sources verbatim as relevant from links above
 
 Output:
 """
 synth_combo_tmpl = PromptTemplate(
-    input_variables=["bullets", "profession"],
+    input_variables=["bullets"],
     template=synth_combo_prompt,
 )
 synth_combo_chain = LLMChain(llm=gpt4_500_llm, prompt=synth_combo_tmpl, verbose=True)
