@@ -187,6 +187,7 @@ Use the following output format:
 - bullet 2 
 ...
 - last bullet 
+
 Sources:
 - source 1 used in bullet 1
 ...
