@@ -47,7 +47,10 @@ def process_link_to_website_text(link: str) -> str:
 
 def process_new_link(link: str, persona: str, index: pinecone.Index) -> Tuple[str, str, str]:
     """Control flow for processing new link."""
-    link_text = process_link_to_website_text(link)
+    try:
+        link_text = process_link_to_website_text(link)
+    except:
+        return "", "", ""
     text_split = TokenTextSplitter()
     splits = text_split.split_text(link_text)
     news_article = splits[0]

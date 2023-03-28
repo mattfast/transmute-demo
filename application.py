@@ -68,6 +68,15 @@ def generate_reponse(user_number, incoming_msg):
         )
     else:
         summary, synthesis, sources = process_new_link(incoming_msg, persona, index)
+
+        if summary == synthesis == sources == "":
+            client.messages.create(
+                body='Something went wrong. Please send us a different link.',
+                from_=os.environ["TWILIO_PRIMARY_NUMBER"],
+                to=user_number,
+            )
+            return
+
         insert_summary_info(user_number, incoming_msg, summary, synthesis)
         formatted_resp = format_summaries_for_text(summary, synthesis, sources)
 
