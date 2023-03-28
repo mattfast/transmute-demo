@@ -53,7 +53,6 @@ def process_new_link(link: str, persona: str, index: pinecone.Index) -> Tuple[st
     news_article = splits[0]
 
     bullet_output = generate_initial_bullets(news_article, persona)
-    print(f"Generated bullets.")
     initial_bullets = separate_bullet_output(bullet_output)
     metadatas = [{"link": link} for _ in range(len(initial_bullets))]
     print(f"Separated bullets.")
@@ -78,12 +77,10 @@ def process_new_link(link: str, persona: str, index: pinecone.Index) -> Tuple[st
     )
 
     extra_info_bullets = generate_extra_info_bullets(
-        bullets_to_synthesize, docs_to_include_for_bullets
+        bullets_to_synthesize, docs_to_include_for_bullets, persona
     )
-    print("Generated extra info.")
 
-    synthesis_bullets = generate_synthesis_bullets(relation_dict, doc_dict)
-    print("Generated Synthesis.")
+    synthesis_bullets = generate_synthesis_bullets(relation_dict, doc_dict, persona)
 
     if len(extra_info_bullets) == 0:
         formatted_learned = ""
