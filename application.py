@@ -67,9 +67,9 @@ def generate_reponse(user_number, incoming_msg):
             summaries[SUMMARY_TABLE_MAIN_SUMMARY], summaries[SUMMARY_TABLE_SYNTHESIS]
         )
     else:
-        summary, synthesis = process_new_link(incoming_msg, persona, index)
+        summary, synthesis, sources = process_new_link(incoming_msg, persona, index)
         insert_summary_info(user_number, incoming_msg, summary, synthesis)
-        formatted_resp = format_summaries_for_text(summary, synthesis)
+        formatted_resp = format_summaries_for_text(summary, synthesis, sources)
 
     for res in formatted_resp:
         client.messages.create(

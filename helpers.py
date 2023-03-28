@@ -1,5 +1,5 @@
 import urllib.request
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Optional
 
 import pinecone
 from bs4 import BeautifulSoup
@@ -45,7 +45,7 @@ def process_link_to_website_text(link: str) -> str:
     return text
 
 
-def process_new_link(link: str, persona: str, index: pinecone.Index) -> Tuple[str, str]:
+def process_new_link(link: str, persona: str, index: pinecone.Index) -> Tuple[str, str, str]:
     """Control flow for processing new link."""
     link_text = process_link_to_website_text(link)
     text_split = TokenTextSplitter()
@@ -82,7 +82,7 @@ def process_new_link(link: str, persona: str, index: pinecone.Index) -> Tuple[st
     extra_info_bullets = bullets_to_synthesize
 
     synthesis_bullets = generate_synthesis_bullets(relation_dict, doc_dict, persona)
-    source_bullets = ["\nSources: "]
+    source_bullets = ["Sources: "]
     source_bullet_set = set()
     for doc in fully_relevant_texts:
         source_bullet_set.add(doc.metadata["link"])
@@ -96,14 +96,15 @@ def process_new_link(link: str, persona: str, index: pinecone.Index) -> Tuple[st
 
     if len(synthesis_bullets) == 0:
         format_synth = ""
+        source_bullets_str = None
     else:
-        synthesis_bullets.extend(source_bullets)
         format_synth = "\n".join(synthesis_bullets)
+        source_bullets_str = "\n".join(source_bullets)
 
     insert_docs(index, extra_info_bullets, metadatas)
     print("Finished Insertion.")
 
-    return formatted_learned, format_synth
+    return formatted_learned, format_synth, source_bullets_str
 
 
 def create_relation_dict(
@@ -155,7 +156,7 @@ def split_bullets_for_summary(bullet_summary: str) -> List[str]:
     return bullets_list
 
 
-def format_summaries_for_text(summary: str, synthesis: str) -> List[str]:
+def format_summaries_for_text(summary: str, synthesis: str, sources: Optional[str] = None) -> List[str]:
     """Format summaries for text message."""
     if summary == "":
         final_formatted_summary = (
@@ -174,5 +175,9 @@ def format_summaries_for_text(summary: str, synthesis: str) -> List[str]:
     else:
         final_formatted_synthesis = f"Insights to past links:\n{synthesis}"
         final_synthesized_list = split_bullets_for_summary(final_formatted_synthesis)
+
+    if sources is not None:
+        final_sources_list = split_bullets_for_summary(sources)
+        final_synthesized_list.extend(final_sources_list)
 
     return final_formatted_list + final_synthesized_list
