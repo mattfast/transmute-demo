@@ -191,14 +191,6 @@ Use the following output format:
 ...
 - last bullet 
 
-Sources:
-- source 1
-- source 2
-...
-- last source
-
-Include sources verbatim as relevant from links above
-
 Output:
 """
 synth_combo_tmpl = PromptTemplate(

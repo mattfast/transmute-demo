@@ -82,6 +82,9 @@ def process_new_link(link: str, persona: str, index: pinecone.Index) -> Tuple[st
     extra_info_bullets = bullets_to_synthesize
 
     synthesis_bullets = generate_synthesis_bullets(relation_dict, doc_dict, persona)
+    source_bullets = ["Sources: "]
+    for doc in fully_relevant_texts:
+        source_bullets.append(doc.metadata["link"])
 
     if len(extra_info_bullets) == 0:
         formatted_learned = ""
@@ -91,6 +94,7 @@ def process_new_link(link: str, persona: str, index: pinecone.Index) -> Tuple[st
     if len(synthesis_bullets) == 0:
         format_synth = ""
     else:
+        synthesis_bullets.extend(source_bullets)
         format_synth = "\n".join(synthesis_bullets)
 
     insert_docs(index, extra_info_bullets, metadatas)
