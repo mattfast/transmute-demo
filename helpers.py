@@ -82,7 +82,7 @@ def process_new_link(link: str, persona: str, index: pinecone.Index) -> Tuple[st
     extra_info_bullets = bullets_to_synthesize
 
     synthesis_bullets = generate_synthesis_bullets(relation_dict, doc_dict, persona)
-    source_bullets = ["Sources: "]
+    source_bullets = ["\nSources: "]
     source_bullet_set = set()
     for doc in fully_relevant_texts:
         source_bullet_set.add(doc.metadata["link"])
