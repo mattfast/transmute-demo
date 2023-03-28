@@ -78,7 +78,7 @@ def generate_reponse(user_number, incoming_msg):
 
     client.messages.create(
         body='Send us another link to deepen your connections '
-             'or change your personality (eg. "as a funny child") ',
+             'or change your personality (eg. "as a curious child") ',
         from_=os.environ["TWILIO_PRIMARY_NUMBER"],
         to=user_number,
     )
