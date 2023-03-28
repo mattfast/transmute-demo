@@ -99,7 +99,7 @@ new_sum_chain = LLMChain(llm=gpt4_500_llm, prompt=new_tmpl, verbose=True)
 
 def get_style_critique_chain(persona: str, chain: LLMChain) -> ConstitutionalChain:
     """Get constitutional chain."""
-    critique_req = """Identify specific ways the text is not suited for a {profession} and how it can be improved. Comment on writing style, tone, content, and use of vocabulary.
+    critique_req = """Identify specific ways the text is not suited for a {profession} and how it can be improved. Comment on writing style, tone, and use of vocabulary.
     """
     critique_req_str = critique_req.format(profession=persona)
     change_principle = ConstitutionalPrinciple(
