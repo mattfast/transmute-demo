@@ -1,8 +1,9 @@
 import uuid
 from typing import Dict, List
-from langchain.embeddings.openai import OpenAIEmbeddings
+
 import pinecone
 from langchain.docstore.document import Document
+from langchain.embeddings.openai import OpenAIEmbeddings
 
 from constants import BASE_EMBEDDING_LENGTH
 

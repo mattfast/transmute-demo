@@ -94,27 +94,6 @@ new_tmpl = PromptTemplate(
 )
 new_sum_chain = LLMChain(llm=gpt4_500_llm, prompt=new_tmpl, verbose=True)
 
-lookback_prompt = """You are given two pieces of text. Determine how they are related to another. 
-
-First Text:
-{first}
-
-Second Text:
-{second}
-
-
-Output format (JSON): 
-{{
-   "reason": resaon for your decision
-}}
-Output:
-"""
-lookback_tmpl = PromptTemplate(
-    input_variables=["first", "second"],
-    template=lookback_prompt,
-)
-lookback_chain = LLMChain(llm=gpt4_500_llm, prompt=lookback_tmpl, verbose=True)
-
 
 extra_info_prompt = """Determine if the first text contains any meaningful extra information than what is already contained in the second text.
 

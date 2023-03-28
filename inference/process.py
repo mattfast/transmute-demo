@@ -1,10 +1,11 @@
-from typing import List, Dict
 import json
+from typing import Dict, List
+
 from langchain.docstore.document import Document
+
 from inference.prompts import (
     extra_info_chain,
     group_chain,
-    lookback_chain,
     new_sum_chain,
     purpose_chain,
     synth_chain,
@@ -27,21 +28,26 @@ def generate_initial_bullets(news_article: str, persona: str) -> str:
     order = group_chain(article_dict)["text"]
 
     # Organize into bulleted summary
-    article_dict = {"article": news_article, "points": tid_res, "themes": order,
-                    "prof_purpose": purpose_res}
+    article_dict = {
+        "article": news_article,
+        "points": tid_res,
+        "themes": order,
+        "prof_purpose": purpose_res,
+    }
     bullet_output = new_sum_chain(article_dict)["text"]
 
     return bullet_output
 
 
 def generate_extra_info_bullets(
-    bullets_to_synthesize: List[str],
-    docs_to_include_for_bullets: List[List[Document]]
+    bullets_to_synthesize: List[str], docs_to_include_for_bullets: List[List[Document]]
 ) -> List[str]:
     """Generate extra info bullets."""
     extra_info_bullets = []
     for i, text in enumerate(bullets_to_synthesize):
-        val = "\n".join(["- " + doc.page_content for doc in docs_to_include_for_bullets[i]])
+        val = "\n".join(
+            ["- " + doc.page_content for doc in docs_to_include_for_bullets[i]]
+        )
         extra_info_dict = {"first": bullets_to_synthesize[i], "second": val}
         extra_res = extra_info_chain(extra_info_dict)["text"]
         extra_dict = json.loads(extra_res)
@@ -54,7 +60,7 @@ def generate_synthesis_bullets(relation_dict: Dict, doc_dict: Dict) -> List[str]
     """Generate synthesis bullets."""
     synth_results = []
     for rel_key in relation_dict.keys():
-        relevant_to_prev = '\n'.join(["- " + text for text in relation_dict[rel_key]])
+        relevant_to_prev = "\n".join(["- " + text for text in relation_dict[rel_key]])
         synth_dict = {"first": relevant_to_prev, "second": rel_key}
         synth_res = synth_chain(synth_dict)["text"]
         link = doc_dict[rel_key].metadata["link"]
@@ -63,7 +69,9 @@ def generate_synthesis_bullets(relation_dict: Dict, doc_dict: Dict) -> List[str]
     if len(synth_results) == 0:
         return []
 
-    synth_bullets = synth_combo_chain.run("\n".join(["- " + result for result in synth_results]))
+    synth_bullets = synth_combo_chain.run(
+        "\n".join(["- " + result for result in synth_results])
+    )
     ind_synths = synth_bullets.split("\n")
     return ind_synths
 
@@ -78,7 +86,3 @@ def separate_bullet_output(bullet_output: str) -> List[str]:
         cleaned_bullets.append(b)
 
     return cleaned_bullets
-
-
-
-

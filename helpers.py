@@ -1,16 +1,17 @@
 import urllib.request
-import pinecone
-from typing import List, Dict, Tuple
+from typing import Dict, List, Tuple
 
+import pinecone
 from bs4 import BeautifulSoup
-from langchain.text_splitter import TokenTextSplitter
 from langchain.docstore.document import Document
+from langchain.text_splitter import TokenTextSplitter
+
 from db.embeddings import find_docs, insert_docs
 from inference.process import (
-    generate_initial_bullets,
-    separate_bullet_output,
     generate_extra_info_bullets,
-    generate_synthesis_bullets
+    generate_initial_bullets,
+    generate_synthesis_bullets,
+    separate_bullet_output,
 )
 
 
@@ -81,9 +82,7 @@ def process_new_link(link: str, persona: str, index: pinecone.Index) -> Tuple[st
     )
     print("Generated extra info.")
 
-    synthesis_bullets = generate_synthesis_bullets(
-        relation_dict, doc_dict
-    )
+    synthesis_bullets = generate_synthesis_bullets(relation_dict, doc_dict)
     print("Generated Synthesis.")
 
     if len(extra_info_bullets) == 0:
@@ -103,8 +102,7 @@ def process_new_link(link: str, persona: str, index: pinecone.Index) -> Tuple[st
 
 
 def create_relation_dict(
-    bullets_to_synthesize: List[str],
-    docs_to_include_for_bullets: List[List[Document]]
+    bullets_to_synthesize: List[str], docs_to_include_for_bullets: List[List[Document]]
 ) -> Dict:
     """Create relation dict between docs and bullets."""
     relation_dict: Dict = {}
@@ -155,19 +153,21 @@ def split_bullets_for_summary(bullet_summary: str) -> List[str]:
 def format_summaries_for_text(summary: str, synthesis: str) -> List[str]:
     """Format summaries for text message."""
     if summary == "":
-        final_formatted_summary = "Looks like there's no new information in this article!"
+        final_formatted_summary = (
+            "Looks like there's no new information in this article!"
+        )
         final_formatted_list = [final_formatted_summary]
     else:
-        final_formatted_summary = \
-    f"""What's new in the article:\n{summary}"""
+        final_formatted_summary = f"""What's new in the article:\n{summary}"""
         final_formatted_list = split_bullets_for_summary(final_formatted_summary)
 
     if synthesis == "":
-        final_formatted_synthesis = "There aren't any connections to previous articles you've sent!"
+        final_formatted_synthesis = (
+            "There aren't any connections to previous articles you've sent!"
+        )
         final_synthesized_list = [final_formatted_synthesis]
     else:
-        final_formatted_synthesis = \
-    f"Insights to past links:\n{synthesis}"
+        final_formatted_synthesis = f"Insights to past links:\n{synthesis}"
         final_synthesized_list = split_bullets_for_summary(final_formatted_synthesis)
 
     return final_formatted_list + final_synthesized_list
