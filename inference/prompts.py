@@ -81,7 +81,6 @@ Do not include a conclusion paragraph, just the content from above.
 Guidelines for writing bullet points:
 - each bullet point should be short. no longer than 15 words
 - do not output more than 4 bullet points
-- explain like you would to a {profession}
 
 Use the following format:
 - bullet 1
@@ -92,13 +91,13 @@ Use the following format:
 Output:
 """
 new_tmpl = PromptTemplate(
-    input_variables=["article", "points", "prof_purpose", "themes", "profession"],
+    input_variables=["article", "points", "prof_purpose", "themes"],
     template=new_summary_prompt,
 )
 new_sum_chain = LLMChain(llm=gpt4_500_llm, prompt=new_tmpl, verbose=True)
 
 
-def get_constitutional_chain(persona: str) -> ConstitutionalChain:
+def get_style_critique_chain(persona: str, chain: LLMChain) -> ConstitutionalChain:
     """Get constitutional chain."""
     critique_req = """Identify specific ways the text is not suited for a {profession} and how it can be improved. Comment on writing style, tone, content, and use of vocabulary.
     """
@@ -110,7 +109,7 @@ def get_constitutional_chain(persona: str) -> ConstitutionalChain:
         """,
     )
     constitutional_chain = ConstitutionalChain.from_llm(
-        chain=new_sum_chain,
+        chain=chain,
         constitutional_principles=[change_principle],
         llm=gpt4_500_llm,
         verbose=True,

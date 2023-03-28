@@ -66,7 +66,6 @@ def generate_reponse(user_number, incoming_msg):
         formatted_resp = format_summaries_for_text(
             summaries[SUMMARY_TABLE_MAIN_SUMMARY], summaries[SUMMARY_TABLE_SYNTHESIS]
         )
-        print(formatted_resp)
     else:
         summary, synthesis = process_new_link(incoming_msg, persona, index)
         insert_summary_info(user_number, incoming_msg, summary, synthesis)
@@ -79,7 +78,7 @@ def generate_reponse(user_number, incoming_msg):
 
     client.messages.create(
         body='Send us another link to deepen your connections '
-             'or change your personality (eg. "as a funny investor") ',
+             'or change your personality (eg. "as a funny child") ',
         from_=os.environ["TWILIO_PRIMARY_NUMBER"],
         to=user_number,
     )

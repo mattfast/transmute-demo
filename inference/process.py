@@ -10,7 +10,7 @@ from inference.prompts import (
     purpose_chain,
     synth_chain,
     synth_combo_chain,
-    get_constitutional_chain,
+    get_style_critique_chain,
     tid_chain,
 )
 
@@ -34,10 +34,9 @@ def generate_initial_bullets(news_article: str, persona: str) -> str:
         "points": tid_res,
         "themes": order,
         "prof_purpose": purpose_res,
-        "profession": persona,
     }
 
-    constitutional_chain = get_constitutional_chain(persona)
+    constitutional_chain = get_style_critique_chain(persona, new_sum_chain)
     bullet_output = constitutional_chain(article_dict)["output"]
 
     return bullet_output
@@ -86,9 +85,9 @@ def generate_synthesis_bullets(
 
     synth_combo_dict = {
         "bullets": "\n".join(["- " + result for result in synth_results]),
-        "profession": persona,
     }
-    synth_bullets = synth_combo_chain(synth_combo_dict)["text"]
+    constitutional_chain = get_style_critique_chain(persona, synth_combo_chain)
+    synth_bullets = constitutional_chain(synth_combo_dict)["output"]
     ind_synths = synth_bullets.split("\n")
     return ind_synths
 
