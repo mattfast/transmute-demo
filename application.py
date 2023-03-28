@@ -101,7 +101,7 @@ def message():
     lowered = incoming_msg.lower()
     persona_list = []
     if lowered[:2] == "as":
-        persona_list = lowered[2:].split(" ")
+        persona_list = lowered[2:].split()
 
     # Update persona
     if len(persona_list) > 0:

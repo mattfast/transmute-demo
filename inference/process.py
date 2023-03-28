@@ -43,7 +43,7 @@ def generate_initial_bullets(news_article: str, persona: str) -> str:
 def generate_extra_info_bullets(
     bullets_to_synthesize: List[str],
     docs_to_include_for_bullets: List[List[Document]],
-    persona: str,
+    _: str,
 ) -> List[str]:
     """Generate extra info bullets."""
     extra_info_bullets = []
@@ -54,7 +54,6 @@ def generate_extra_info_bullets(
         extra_info_dict = {
             "first": bullets_to_synthesize[i],
             "second": val,
-            "profession": persona,
         }
         extra_res = extra_info_chain(extra_info_dict)["text"]
         extra_dict = json.loads(extra_res)
