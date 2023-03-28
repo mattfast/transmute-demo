@@ -76,6 +76,10 @@ Article:
 
 Do not include a conclusion paragraph, just the content from above.
 
+Guidelines for writing bullet points:
+- each bullet point should be short. no longer than 15 words
+- do not output more than 5 bullet points
+
 Use the following format:
 - bullet 1
 - bullet 2
@@ -167,20 +171,23 @@ synth_combo_prompt = """Synthesize each of the bullet points below into unique i
 Information:
 {bullets}
 
-Output Format:
-- bullet 1 (Source: source from information)
-- bullet 2 (Source: source from information)
-...
-- last bullet (Source: source from information)
-
 Guidelines for synthesizing:
 - be bold with the synthesis you are making from the information above
 - make predictions whenever possible
 - draw interesting connections between disparate ideas
 - postulate new ideas
 
+Guidelines for writing bullet points:
+- each bullet point should be short. no longer than 15 words
+- do not output more than 3 bullet points
 
-Include sources as well
+Use the following output format:
+- bullet 1 (Source: source from information)
+- bullet 2 (Source: source from information)
+...
+- last bullet (Source: source from information)
+
+Include sources verbatim from links above as well
 
 Output:
 """
