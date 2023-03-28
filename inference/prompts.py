@@ -79,7 +79,7 @@ Article:
 Do not include a conclusion paragraph, just the content from above.
 
 Guidelines for writing bullet points:
-- each bullet point should be short. no longer than 12 words
+- each bullet point should be short. no longer than 15 words
 - do not output more than 4 bullet points
 - explain like you would to a {profession}
 
@@ -193,7 +193,8 @@ Use the following output format:
 - last bullet 
 
 Sources:
-- source 1 
+- source 1
+- source 2
 ...
 - last source
 
