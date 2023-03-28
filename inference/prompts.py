@@ -97,21 +97,25 @@ new_tmpl = PromptTemplate(
 )
 new_sum_chain = LLMChain(llm=gpt4_500_llm, prompt=new_tmpl, verbose=True)
 
-critique_req = """Identify specific ways the text is not suited for a {profession} and how it can be improved. Comment on writing style, tone, content, and use of vocabulary.
-"""
-critique_req_str = critique_req.format(profession="funny child")
-change_principle = ConstitutionalPrinciple(
-    name="Change Principle",
-    critique_request=critique_req_str,
-    revision_request="""Rewrite the model's response. In particular, use recommendations from the critiques provided. Output in the same format.
-    """,
-)
-constitutional_chain = ConstitutionalChain.from_llm(
-    chain=new_sum_chain,
-    constitutional_principles=[change_principle],
-    llm=gpt4_500_llm,
-    verbose=True,
-)
+
+def get_constitutional_chain(persona: str) -> ConstitutionalChain:
+    """Get constitutional chain."""
+    critique_req = """Identify specific ways the text is not suited for a {profession} and how it can be improved. Comment on writing style, tone, content, and use of vocabulary.
+    """
+    critique_req_str = critique_req.format(profession=persona)
+    change_principle = ConstitutionalPrinciple(
+        name="Change Principle",
+        critique_request=critique_req_str,
+        revision_request="""Rewrite the model's response. In particular, use recommendations from the critiques provided. Output in the same format.
+        """,
+    )
+    constitutional_chain = ConstitutionalChain.from_llm(
+        chain=new_sum_chain,
+        constitutional_principles=[change_principle],
+        llm=gpt4_500_llm,
+        verbose=True,
+    )
+    return constitutional_chain
 
 
 extra_info_prompt = """Determine if the first text contains any meaningful extra information than what is already contained in the second text.
