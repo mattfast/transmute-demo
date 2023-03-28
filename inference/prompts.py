@@ -1,4 +1,6 @@
 from langchain import LLMChain, OpenAI
+from langchain.chains.constitutional_ai.base import ConstitutionalChain
+from langchain.chains.constitutional_ai.models import ConstitutionalPrinciple
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts import PromptTemplate
 
@@ -95,6 +97,22 @@ new_tmpl = PromptTemplate(
 )
 new_sum_chain = LLMChain(llm=gpt4_500_llm, prompt=new_tmpl, verbose=True)
 
+critique_req = """Identify specific ways the text is not suited for a {profession} and how it can be improved. Comment on writing style, tone, content, and use of vocabulary.
+"""
+critique_req_str = critique_req.format(profession="funny child")
+change_principle = ConstitutionalPrinciple(
+    name="Change Principle",
+    critique_request=critique_req_str,
+    revision_request="""Rewrite the model's response. In particular, use recommendations from the critiques provided. Output in the same format.
+    """,
+)
+constitutional_chain = ConstitutionalChain.from_llm(
+    chain=new_sum_chain,
+    constitutional_principles=[change_principle],
+    llm=gpt4_500_llm,
+    verbose=True,
+)
+
 
 extra_info_prompt = """Determine if the first text contains any meaningful extra information than what is already contained in the second text.
 
@@ -127,9 +145,10 @@ You're synthesis can touch on a number of things, including but not limited to:
 - how information presented in the first builds upon the second
 - how assumptions in the first challenge those in the second
 - how assumptions in the first are consistent with those in the second
-- tailor the wording of your response to a {profession}
+- make predictions based on the text of the two
+- explain like you would to a {profession}
 
-Be bold and unique. Be general in the connections you make and don't be overly specific about details from the first piece.
+Be bold and unique. Be bold, adventurous, and general in the connections you make and don't be overly specific about details from the first piece.
 
 
 First Piece:
@@ -138,7 +157,7 @@ First Piece:
 Second Piece:
 {second}
 
-Just output the synthesis. Make sure the synthesis sentence is short.
+Just output the synthesis of the content. Make sure the synthesis sentence is short.
 Output:
 """
 synth_tmpl = PromptTemplate(

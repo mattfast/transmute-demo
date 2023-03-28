@@ -10,6 +10,7 @@ from inference.prompts import (
     purpose_chain,
     synth_chain,
     synth_combo_chain,
+    constitutional_chain,
     tid_chain,
 )
 
@@ -35,7 +36,7 @@ def generate_initial_bullets(news_article: str, persona: str) -> str:
         "prof_purpose": purpose_res,
         "profession": persona,
     }
-    bullet_output = new_sum_chain(article_dict)["text"]
+    bullet_output = constitutional_chain(article_dict)["output"]
 
     return bullet_output
 

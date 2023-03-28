@@ -76,9 +76,10 @@ def process_new_link(link: str, persona: str, index: pinecone.Index) -> Tuple[st
         bullets_to_synthesize, docs_to_include_for_bullets
     )
 
-    extra_info_bullets = generate_extra_info_bullets(
-        bullets_to_synthesize, docs_to_include_for_bullets, persona
-    )
+    # extra_info_bullets = generate_extra_info_bullets(
+    #     bullets_to_synthesize, docs_to_include_for_bullets, persona
+    # )
+    extra_info_bullets = bullets_to_synthesize
 
     synthesis_bullets = generate_synthesis_bullets(relation_dict, doc_dict, persona)
 
