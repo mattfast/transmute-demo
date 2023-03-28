@@ -79,7 +79,7 @@ Article:
 Do not include a conclusion paragraph, just the content from above.
 
 Guidelines for writing bullet points:
-- each bullet point should be short but still be a sentence. no longer than 15 words.
+- each bullet point should be short. no longer than 15 words.
 - do not output more than 4 bullet points
 
 Use the following format:

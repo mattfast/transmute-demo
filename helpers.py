@@ -87,7 +87,7 @@ def process_new_link(link: str, persona: str, index: pinecone.Index) -> Tuple[st
     for doc in fully_relevant_texts:
         source_bullet_set.add(doc.metadata["link"])
     for source in source_bullet_set:
-        source_bullets.append(source)
+        source_bullets.append("- " + source)
 
     if len(extra_info_bullets) == 0:
         formatted_learned = ""
