@@ -171,6 +171,7 @@ synth_combo_prompt = """Synthesize each of the bullet points below into unique i
 Information:
 {bullets}
 
+
 Guidelines for synthesizing:
 - be bold with the synthesis you are making from the information above
 - make predictions whenever possible
@@ -182,12 +183,16 @@ Guidelines for writing bullet points:
 - do not output more than 3 bullet points
 
 Use the following output format:
-- bullet 1 (Source: source from information)
-- bullet 2 (Source: source from information)
+- bullet 1 
+- bullet 2 
 ...
-- last bullet (Source: source from information)
+- last bullet 
+Sources:
+- source 1 used in bullet 1
+...
+- last source used in last bullet
 
-Include sources verbatim from links above as well
+Include sources verbatim from links above
 
 Output:
 """
