@@ -127,7 +127,7 @@ You're synthesis can touch on a number of things, including but not limited to:
 - how information presented in the first builds upon the second
 - how assumptions in the first challenge those in the second
 - how assumptions in the first are consistent with those in the second
-- tailor the style of your response to a {profession}
+- tailor the wording of your response to a {profession}
 
 Be bold and unique. Be general in the connections you make and don't be overly specific about details from the first piece.
 
@@ -162,7 +162,7 @@ Guidelines for synthesizing:
 Guidelines for writing bullet points:
 - each bullet point should be short. no longer than 12 words
 - do not output more than 3 bullet points
-- tailor the style of your response to a {profession}
+- tailor the wording of your response to a {profession}
 
 Use the following output format:
 - bullet 1 
