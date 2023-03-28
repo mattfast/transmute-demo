@@ -176,8 +176,9 @@ def format_summaries_for_text(summary: str, synthesis: str, sources: Optional[st
         final_formatted_synthesis = f"Insights to past links:\n{synthesis}"
         final_synthesized_list = split_bullets_for_summary(final_formatted_synthesis)
 
+    final_list = final_formatted_list + final_synthesized_list
     if sources is not None:
         final_sources_list = split_bullets_for_summary(sources)
-        final_synthesized_list.extend(final_sources_list)
+        final_list = final_sources_list + final_list
 
-    return final_formatted_list + final_synthesized_list
+    return final_list
