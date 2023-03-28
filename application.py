@@ -98,9 +98,10 @@ def message():
         )
         return Response(str(resp), mimetype="application/xml")
 
+    lowered = incoming_msg.lower()
     persona_list = []
-    if "as" in incoming_msg:
-        persona_list = incoming_msg[2:].split()
+    if lowered[:2] == "as":
+        persona_list = lowered[2:].split(" ")
 
     # Update persona
     if len(persona_list) > 0:
