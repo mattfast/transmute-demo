@@ -148,10 +148,11 @@ You're synthesis can touch on a number of things, including but not limited to:
 - how information presented in the first builds upon the second
 - how assumptions in the first challenge those in the second
 - how assumptions in the first are consistent with those in the second
+- be specific to the content of both pieces
 - make predictions based on the text of the two
 - explain like you would to a {profession}
 
-Be bold and unique. Be bold, adventurous, and general in the connections you make and don't be overly specific about details from the first piece.
+Be bold and unique. Be bold and adventurous in the connections you make and don't be overly specific about details from the first piece.
 
 
 First Piece:
@@ -177,8 +178,9 @@ Information:
 
 Guidelines for synthesizing:
 - be bold with the synthesis you are making from the information above
-- make predictions whenever possible
+- make predictions
 - draw interesting connections between disparate ideas
+- ask questions designed to spur further thought about the connections between ideas
 - postulate new ideas
 
 Guidelines for writing bullet points:
