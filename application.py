@@ -137,11 +137,11 @@ def message():
 def process_msg_number(msg_num: str) -> Optional[str]:
     """Process message number into a proper format."""
     number_prefix = "+1"
-    if len(msg_num) == 11:
+    if len(msg_num) == 10:
         return number_prefix + msg_num
-    elif len(msg_num) == 12:
+    elif len(msg_num) == 11:
         return "+" + msg_num
-    elif len(msg_num) == 13:
+    elif len(msg_num) == 12:
         return msg_num
     return None
 
