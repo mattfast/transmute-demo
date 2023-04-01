@@ -3,6 +3,9 @@ from typing import Dict, List, Optional
 from config import supabase
 from constants import (
     DEFAULT_PERSONA,
+    FRIEND_TABLE_FRIEND_NUM,
+    FRIEND_TABLE_NAME,
+    FRIEND_TABLE_USER_NUM,
     SUMMARY_TABLE_LINK,
     SUMMARY_TABLE_MAIN_SUMMARY,
     SUMMARY_TABLE_NAME,
@@ -78,4 +81,13 @@ def update_persona_info(user_num: str, persona: str) -> None:
         .execute()
         .data
     )
+    assert len(resp) > 0
+
+
+def add_friend_info(user_num: str, friend_num: str) -> None:
+    """Add friend Info to table."""
+    # TODO: Add checks to make sure that ppl aren't already friends
+    friend_info = {FRIEND_TABLE_USER_NUM: user_num, FRIEND_TABLE_FRIEND_NUM: friend_num}
+
+    resp = supabase.table(FRIEND_TABLE_NAME).insert(friend_info).execute().data
     assert len(resp) > 0

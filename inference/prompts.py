@@ -79,7 +79,7 @@ Article:
 Do not include a conclusion paragraph, just the content from above.
 
 Guidelines for writing bullet points:
-- each bullet point should be short. no longer than 15 words
+- each bullet point should be short. no longer than 15 words.
 - do not output more than 4 bullet points
 
 Use the following format:
@@ -99,7 +99,7 @@ new_sum_chain = LLMChain(llm=gpt4_500_llm, prompt=new_tmpl, verbose=True)
 
 def get_style_critique_chain(persona: str, chain: LLMChain) -> ConstitutionalChain:
     """Get constitutional chain."""
-    critique_req = """Identify specific ways the text is not suited for a {profession} and how it can be improved. Comment on writing style, tone, content, and use of vocabulary.
+    critique_req = """Identify specific ways the text is not suited for a {profession} and how it can be improved. Comment on writing style, tone, and use of vocabulary.
     """
     critique_req_str = critique_req.format(profession=persona)
     change_principle = ConstitutionalPrinciple(
@@ -148,10 +148,11 @@ You're synthesis can touch on a number of things, including but not limited to:
 - how information presented in the first builds upon the second
 - how assumptions in the first challenge those in the second
 - how assumptions in the first are consistent with those in the second
+- be specific to the content of both pieces
 - make predictions based on the text of the two
 - explain like you would to a {profession}
 
-Be bold and unique. Be bold, adventurous, and general in the connections you make and don't be overly specific about details from the first piece.
+Be bold and unique. Be bold and adventurous in the connections you make and don't be overly specific about details from the first piece.
 
 
 First Piece:
@@ -177,8 +178,9 @@ Information:
 
 Guidelines for synthesizing:
 - be bold with the synthesis you are making from the information above
-- make predictions whenever possible
+- make predictions
 - draw interesting connections between disparate ideas
+- ask questions designed to spur further thought about the connections between ideas
 - postulate new ideas
 
 Guidelines for writing bullet points:

@@ -5,12 +5,12 @@ from langchain.docstore.document import Document
 
 from inference.prompts import (
     extra_info_chain,
+    get_style_critique_chain,
     group_chain,
     new_sum_chain,
     purpose_chain,
     synth_chain,
     synth_combo_chain,
-    get_style_critique_chain,
     tid_chain,
 )
 
