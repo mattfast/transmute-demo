@@ -26,7 +26,7 @@ from db.api import (
 from db.embeddings import create_new_user_index
 from helpers import format_summaries_for_text, process_new_link
 
-# Stop hardcoding this
+# Stop hardcoding this 
 pinecone.init(api_key=os.environ["PINECONE_API_KEY"], environment="us-east1-gcp")
 
 app = Flask(__name__)
