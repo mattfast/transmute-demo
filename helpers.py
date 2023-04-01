@@ -1,5 +1,5 @@
 import urllib.request
-from typing import Dict, List, Tuple, Optional
+from typing import Dict, List, Optional, Tuple
 
 import pinecone
 from bs4 import BeautifulSoup
@@ -45,7 +45,9 @@ def process_link_to_website_text(link: str) -> str:
     return text
 
 
-def process_new_link(link: str, persona: str, index: pinecone.Index) -> Tuple[str, str, str]:
+def process_new_link(
+    link: str, persona: str, index: pinecone.Index
+) -> Tuple[str, str, str]:
     """Control flow for processing new link."""
     try:
         link_text = process_link_to_website_text(link)
@@ -159,7 +161,9 @@ def split_bullets_for_summary(bullet_summary: str) -> List[str]:
     return bullets_list
 
 
-def format_summaries_for_text(summary: str, synthesis: str, sources: Optional[str] = None) -> List[str]:
+def format_summaries_for_text(
+    summary: str, synthesis: str, sources: Optional[str] = None
+) -> List[str]:
     """Format summaries for text message."""
     if summary == "":
         final_formatted_summary = (
