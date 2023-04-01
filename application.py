@@ -149,7 +149,7 @@ def process_msg_number(msg_num: str) -> Optional[str]:
 def process_friend_message(incoming_msg: str, user_number: str) -> Response:
     """Process add friend message.
 
-    Format: add friend number:###
+    Format: add friend number: ###
     """
     resp = MessagingResponse()
     number_list = incoming_msg.split(":")
@@ -167,7 +167,7 @@ def process_friend_message(incoming_msg: str, user_number: str) -> Response:
         )
     else:
         add_friend_info(user_number, processed_num)
-        resp.message("Succesfully added friend's number.")
+        resp.message("Succesfully added friend's number!")
 
     return Response(str(resp), mimetype="application/xml")
 
