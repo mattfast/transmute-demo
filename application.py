@@ -102,7 +102,7 @@ def determine_message_type(incoming_msg: str) -> MessageType:
         return MessageType.PERSONA_MESSAGE
     elif lowered.startswith("add friend"):
         return MessageType.ADD_FRIEND_MESSAGE
-    elif lowered.startswith("name"):
+    elif lowered.startswith("call me"):
         return MessageType.ADD_NAME_MESSAGE
     return MessageType.INSIGHTS_MESSAGE
 
