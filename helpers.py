@@ -51,6 +51,7 @@ def process_new_link(
     """Control flow for processing new link."""
     try:
         link_text = process_link_to_website_text(link)
+        print(link_text)
     except:
         return "", "", ""
     text_split = TokenTextSplitter()
