@@ -1,4 +1,5 @@
 import urllib.request
+from urllib.error import HTTPError
 from typing import Dict, List, Optional, Tuple
 
 import pinecone
@@ -25,7 +26,13 @@ def process_link_to_website_text(link: str) -> str:
         },
     )
     print("Before making request")
-    page_req = urllib.request.urlopen(req)
+    try:
+        page_req = urllib.request.urlopen(req)
+    except HTTPError as e:
+        err = e.read()
+        code = e.getcode()
+        print(err)
+        raise e
     print("Made request")
 
     html = page_req.read()
