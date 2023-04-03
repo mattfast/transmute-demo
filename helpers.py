@@ -54,6 +54,7 @@ def process_new_link(
         print(link_text)
     except:
         return "", "", ""
+    print(link_text)
     text_split = TokenTextSplitter()
     splits = text_split.split_text(link_text)
     news_article = splits[0]
