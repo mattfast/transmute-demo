@@ -49,6 +49,7 @@ def process_new_link(
     link: str, persona: str, index: pinecone.Index
 ) -> Tuple[str, str, str]:
     """Control flow for processing new link."""
+    print(link)
     try:
         link_text = process_link_to_website_text(link)
         print(link_text)
