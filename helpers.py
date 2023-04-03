@@ -56,7 +56,8 @@ def process_new_link(
     try:
         link_text = process_link_to_website_text(link)
         print(link_text)
-    except:
+    except Exception as e:
+        print(e)
         return "", "", ""
     print("TEXT:" + link_text)
     text_split = TokenTextSplitter()
