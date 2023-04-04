@@ -176,7 +176,7 @@ def split_bullets_for_summary(bullet_summary: str) -> List[str]:
 
 
 def format_summaries_for_text(
-    summary: str, synthesis: str, sources: Optional[str] = None
+    summary: str, synthesis: str, sources: Optional[str] = None, synthesis_reason: str = ""
 ) -> List[str]:
     """Format summaries for text message."""
     if summary == "":
@@ -190,7 +190,7 @@ def format_summaries_for_text(
 
     if synthesis == "":
         final_formatted_synthesis = (
-            "There aren't any connections to previous articles you've sent!"
+            f"There aren't any connections to previous articles you've sent {synthesis_reason}"
         )
         final_synthesized_list = [final_formatted_synthesis]
     else:

@@ -38,12 +38,14 @@ client = Client(account_sid, auth_token)
 
 def generate_reponse(user_number, incoming_msg):
     user_info = fetch_user_info(user_number)
+    is_first_time = False
     if user_info is None:
         client.messages.create(
             body="Welcome to Transmute! We find all the new and relevant information from the links you send us and connect them to the links you've sent us in the past. Please hold tight while we set up your environment. This could take a couple minutes.",
             from_=os.environ["TWILIO_PRIMARY_NUMBER"],
             to=user_number,
         )
+        is_first_time = True
         index_name = create_new_user_index()
         create_new_user(user_number, index_name)
         index = pinecone.Index(index_name)
@@ -81,7 +83,9 @@ def generate_reponse(user_number, incoming_msg):
             return
 
         insert_summary_info(user_number, incoming_msg, summary, synthesis)
-        formatted_resp = format_summaries_for_text(summary, synthesis, sources)
+        if is_first_time:
+            synthesis_reason = " since this is your first time using Transmute."
+        formatted_resp = format_summaries_for_text(summary, synthesis, sources, synthesis_reason=synthesis_reason)
 
     for res in formatted_resp:
         client.messages.create(
@@ -89,8 +93,8 @@ def generate_reponse(user_number, incoming_msg):
         )
 
     client.messages.create(
-        body="Send us another link to deepen your connections "
-        'or change your personality (eg. "as a curious child") ',
+        body="Send us another link or visit https://gptwitter-neon.vercel.app/"
+             "for your full digest.",
         from_=os.environ["TWILIO_PRIMARY_NUMBER"],
         to=user_number,
     )
