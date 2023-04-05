@@ -44,6 +44,23 @@ def create_new_user(
     assert len(resp) > 0
 
 
+def update_user_index(
+    user_num: str, index_name: str
+) -> None:
+    """Create a new user."""
+    user_info = {
+        USER_TABLE_PINECONE_INDEX: index_name,
+    }
+    resp = (
+        supabase.table("UserInfo")
+            .update(user_info)
+            .filter(USER_TABLE_NUM, "eq", user_num)
+            .execute()
+            .data
+    )
+    assert len(resp) > 0
+
+
 def fetch_link_info(user_num: str, link: str) -> Optional[Dict]:
     """Fetch Link info from supabase Summaries Table."""
     summaries = (
