@@ -107,7 +107,7 @@ def generate_reponse(user_number, incoming_msg):
 
     client.messages.create(
         body="Send us another link or visit https://gptwitter-neon.vercel.app/"
-             "for your full digest.",
+             " for your full digest.",
         from_=os.environ["TWILIO_PRIMARY_NUMBER"],
         to=user_number,
     )
