@@ -95,6 +95,7 @@ def generate_reponse(user_number, incoming_msg):
             return
 
         insert_summary_info(user_number, incoming_msg, summary, synthesis)
+        synthesis_reason = ""
         if is_first_time:
             synthesis_reason = " since this is your first time using Transmute."
         formatted_resp = format_summaries_for_text(summary, synthesis, sources, synthesis_reason=synthesis_reason)
