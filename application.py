@@ -18,6 +18,7 @@ from constants import (
 from db.api import (
     add_friend_info,
     create_new_user,
+    update_user_index,
     fetch_link_info,
     fetch_user_info,
     insert_summary_info,
@@ -39,7 +40,7 @@ client = Client(account_sid, auth_token)
 def generate_reponse(user_number, incoming_msg):
     user_info = fetch_user_info(user_number)
     is_first_time = False
-    if user_info is None or user_info[USER_TABLE_PINECONE_INDEX] is None:
+    if user_info is None:
         client.messages.create(
             body="Welcome to Transmute! We find all the new and relevant information from the links you send us and connect them to the links you've sent us in the past. Please hold tight while we set up your environment. This could take a couple minutes.",
             from_=os.environ["TWILIO_PRIMARY_NUMBER"],
@@ -50,6 +51,16 @@ def generate_reponse(user_number, incoming_msg):
         create_new_user(user_number, index_name)
         index = pinecone.Index(index_name)
         persona = DEFAULT_PERSONA
+    elif user_info[USER_TABLE_PINECONE_INDEX] is None:
+        client.messages.create(
+            body="Welcome to Transmute! We're making some upgrades to your environment. Please hold tight while we we're making these changes. This could take a couple minutes.",
+            from_=os.environ["TWILIO_PRIMARY_NUMBER"],
+            to=user_number,
+        )
+
+        index_name = create_new_user_index()
+        update_user_index(user_number, index_name)
+        persona = user_info[USER_TABLE_PERSONA]
     else:
         client.messages.create(
             body="Welcome back to Transmute! You'll get a text in a few minutes with the insights from this link.",
