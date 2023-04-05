@@ -8,7 +8,7 @@ from langchain.embeddings.openai import OpenAIEmbeddings
 from constants import BASE_EMBEDDING_LENGTH
 
 pinecone.init(
-    api_key="7348774e-f6d1-47f6-91c2-b955e910fe4c", environment="us-east1-gcp"
+    api_key="b40966ec-276b-47ca-8cde-c1580abd5f67", environment="us-east4-gcp"
 )
 embeddings = OpenAIEmbeddings()
 
