@@ -53,13 +53,14 @@ def generate_reponse(user_number, incoming_msg):
         persona = DEFAULT_PERSONA
     elif user_info[USER_TABLE_PINECONE_INDEX] is None:
         client.messages.create(
-            body="Welcome to Transmute! We're making some upgrades to your environment. Please hold tight while we we're making these changes. This could take a couple minutes.",
+            body="Welcome to Transmute! We're making some upgrades to your environment. Please hold tight while we make these changes. This could take a couple minutes.",
             from_=os.environ["TWILIO_PRIMARY_NUMBER"],
             to=user_number,
         )
 
         index_name = create_new_user_index()
         update_user_index(user_number, index_name)
+        index = pinecone.Index(index_name)
         persona = user_info[USER_TABLE_PERSONA]
     else:
         client.messages.create(
