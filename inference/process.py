@@ -85,6 +85,7 @@ def generate_synthesis_bullets(
 
     synth_combo_dict = {
         "bullets": "\n".join(["- " + result for result in synth_results]),
+        "personality": persona
     }
     constitutional_chain = get_style_critique_chain(persona, synth_combo_chain)
     synth_bullets = constitutional_chain(synth_combo_dict)["output"]

@@ -99,7 +99,7 @@ new_sum_chain = LLMChain(llm=gpt4_500_llm, prompt=new_tmpl, verbose=True)
 
 def get_style_critique_chain(persona: str, chain: LLMChain) -> ConstitutionalChain:
     """Get constitutional chain."""
-    critique_req = """Identify specific ways the text is not suited for a {profession} and how it can be improved. Comment on writing style, tone, and use of vocabulary.
+    critique_req = """Identify specific ways the text is not suited by and for a {profession} and how it can be improved. Comment on writing style, tone, and use of vocabulary.
     """
     critique_req_str = critique_req.format(profession=persona)
     change_principle = ConstitutionalPrinciple(
@@ -186,6 +186,7 @@ Guidelines for synthesizing:
 Guidelines for writing bullet points:
 - each bullet point should be short. no longer than 12 words
 - do not output more than 3 bullet points
+- write as a {personality} would speak
 
 Use the following output format:
 - bullet 1 
@@ -196,7 +197,7 @@ Use the following output format:
 Output:
 """
 synth_combo_tmpl = PromptTemplate(
-    input_variables=["bullets"],
+    input_variables=["bullets", "personality"],
     template=synth_combo_prompt,
 )
 synth_combo_chain = LLMChain(llm=gpt4_500_llm, prompt=synth_combo_tmpl, verbose=True)
