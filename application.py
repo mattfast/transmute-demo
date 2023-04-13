@@ -106,7 +106,7 @@ def generate_reponse(user_number, incoming_msg):
         )
 
     client.messages.create(
-        body="Send us another link, text \"info\" for more commands, or visit https://gptwitter-neon.vercel.app/"
+        body="Send us another link, text \"commands\" for more commands, or visit https://gptwitter-neon.vercel.app/"
              " for your full digest.",
         from_=os.environ["TWILIO_PRIMARY_NUMBER"],
         to=user_number,
@@ -115,7 +115,7 @@ def generate_reponse(user_number, incoming_msg):
 
 def determine_message_type(incoming_msg: str) -> MessageType:
     lowered = incoming_msg.lower()
-    if lowered == "info":
+    if lowered == "commands":
         return MessageType.INFO_MESSAGE
     if lowered.startswith("as"):
         return MessageType.PERSONA_MESSAGE
