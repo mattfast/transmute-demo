@@ -63,13 +63,13 @@ def generate_reponse(user_number, incoming_msg):
         index = pinecone.Index(index_name)
         persona = user_info[USER_TABLE_PERSONA]
     else:
+        persona = user_info[USER_TABLE_PERSONA]
         client.messages.create(
-            body="Welcome back to Transmute! You'll get a text in a few minutes with the insights from this link.",
+            body=f"Welcome back to Transmute! You'll get a text in a few minutes with the insights from this link. You're current personality is: {persona}.",
             from_=os.environ["TWILIO_PRIMARY_NUMBER"],
             to=user_number,
         )
         index = pinecone.Index(user_info[USER_TABLE_PINECONE_INDEX])
-        persona = user_info[USER_TABLE_PERSONA]
 
     # Assume link is the incoming message
     summaries = fetch_link_info(user_number, incoming_msg)
@@ -106,7 +106,7 @@ def generate_reponse(user_number, incoming_msg):
         )
 
     client.messages.create(
-        body="Send us another link or visit https://gptwitter-neon.vercel.app/"
+        body="Send us another link, text \"info\" for more commands, or visit https://gptwitter-neon.vercel.app/"
              " for your full digest.",
         from_=os.environ["TWILIO_PRIMARY_NUMBER"],
         to=user_number,
@@ -115,6 +115,8 @@ def generate_reponse(user_number, incoming_msg):
 
 def determine_message_type(incoming_msg: str) -> MessageType:
     lowered = incoming_msg.lower()
+    if lowered == "info":
+        return MessageType.INFO_MESSAGE
     if lowered.startswith("as"):
         return MessageType.PERSONA_MESSAGE
     elif lowered.startswith("add friend"):
@@ -138,7 +140,9 @@ def message():
         return Response(str(resp), mimetype="application/xml")
 
     message_type = determine_message_type(incoming_msg)
-    if message_type is MessageType.PERSONA_MESSAGE:
+    if message_type is MessageType.INFO_MESSAGE:
+        resp.message("Send a link to us to learn more or change you're personality by texting \"as a personality\" (eg. as a curious child)")
+    elif message_type is MessageType.PERSONA_MESSAGE:
         return process_persona_message(incoming_msg, user_number)
     elif message_type is MessageType.ADD_FRIEND_MESSAGE:
         return process_friend_message(incoming_msg, user_number)

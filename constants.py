@@ -18,13 +18,14 @@ SUMMARY_TABLE_MAIN_SUMMARY = "summary"
 SUMMARY_TABLE_PERSONA = "persona"
 SUMMARY_TABLE_SYNTHESIS = "synthesis"
 
-DEFAULT_PERSONA = "investor"
+DEFAULT_PERSONA = "valley girl"
 
 # Hardcode OpenAI Embedding length. Should change in future
 BASE_EMBEDDING_LENGTH = 1536
 
 
 class MessageType(Enum):
+    INFO_MESSAGE = "info"
     PERSONA_MESSAGE = "persona"
     ADD_FRIEND_MESSAGE = "add_friend"
     ADD_NAME_MESSAGE = "add_name"
