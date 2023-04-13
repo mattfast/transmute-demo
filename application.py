@@ -141,7 +141,7 @@ def message():
 
     message_type = determine_message_type(incoming_msg)
     if message_type is MessageType.INFO_MESSAGE:
-        resp.message("Send a link to us to learn more or change you're personality by texting \"as a personality\" (eg. as a curious child)")
+        resp.message("Send a link to us to learn more or change your personality by texting \"as a personality\" (eg. as a curious child)")
     elif message_type is MessageType.PERSONA_MESSAGE:
         return process_persona_message(incoming_msg, user_number)
     elif message_type is MessageType.ADD_FRIEND_MESSAGE:
